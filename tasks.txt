@@ -8,3 +8,8 @@ create api (courses)
     -middlewares
     -routes
     - add facke data(json files)
+-----------------------------------------3/8/2024
+connect with mongodb 
+- Update CRUD operation with mongodb
+- install  mongodb-compass
+----------------------------------------
