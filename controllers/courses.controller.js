@@ -1,27 +1,33 @@
 
-const {body,validationResult} =require('express-validator')
-let {courses} =require('../data/courses')
+const { body, validationResult } = require('express-validator')
+// let {courses} =require('../data/courses')
+const { courses } = require('../models/course.model')
 
-const getAllCourses = (req, res) => {
+const getAllCourses = async (req, res) => {
 
     // res.send("ddddddd")
-    res.json(courses)
+    let data = await courses.find()
+    res.json(data)
 }
 
 
-const getCourses = (req, res) => {
-    // console.log(req.ip)
-    // res.send('<h1>welcome</h1>')
-    let id = +req.params.id
-    let course = courses.find((course) => course.id === id)
-    if (!course) {
-        return res.status(404).json({ msg: "notfound" })
+const getCourses = async (req, res) => {
+
+    try {
+        let id = req.params.id
+        let course = await courses.findById({ "_id": id })
+        if (!course) {
+            return res.status(404).json({ msg: "notfound" })
+        }
+        res.status(200).json(course)
+    } catch (err) {
+        return res.status(404).json({ msg: "id not valed " })
+
     }
-    res.status(200).json(course)
 }
 
 
-const addCourse=(req, res) => {
+const addCourse = async (req, res) => {
 
     // if (!req.body.title || !req.body.price) {
     //     return res.status(404).json({ msg: "data is empty" })
@@ -32,37 +38,55 @@ const addCourse=(req, res) => {
     if (!error_val.isEmpty()) {
         return res.status(400).json(error_val.array())
     }
+    const newcourse = new courses(req.body)
+    await newcourse.save()
 
-    const course = { id: courses.length + 1, ...req.body }
-
-    courses.push(course)
-    res.status(201).json(course)
+    res.status(201).json(newcourse)
 
 }
 
 
-const updateCourse=(req, res) => {
+const updateCourse = async (req, res) => {
+    try {
+        let id = req.params.id
+        // const updatecourse = await courses.findByIdAndUpdate(id, { $set: { ...req.body } })
+        const updatecourse = await courses.updateOne({ "_id": id }, { $set: { ...req.body } })
 
-    let id =+ req.params.id
-    let course =courses.find((course)=> course.id === id)
-    if (!course){
-        return res.status(404).json({msg:"notfound"})
+        if (!updatecourse) {
+            return res.status(404).json({ msg: "notfound" })
+        }
+        //  courses[id]=course
+        res.status(200).json(updatecourse)
+    } catch (err) {
+        return res.status(404).json({ msg: "id not valed " })
+
     }
-        course ={...course,...req.body}//overwrite
-    //  courses[id]=course
-        res.status(200).json(course)
-
 
 }
-const deleteCourse=(req, res) => {
+const deleteCourse = async(req, res) => {
 
-    let id =+ req.params.id
-    
-    courses =courses.find((course)=> course.id  !== id)
-    // res.status(200).json(course)
 
-     res.status(200).json({success:true})
-    
+    try {
+        let id = req.params.id
+        // const deletecourse = await courses.deleteOne({ "_id": id })
+        const deletecourse = await courses.findByIdAndDelete(id)
+
+        if (!deletecourse) {
+            return res.status(404).json({ msg: "notfound" })
+        }
+        //  courses[id]=course
+        res.status(200).json({ success: true })
+
+    } catch (err) {
+        return res.status(404).json({ msg: "id not valed " })
+
+    }
+
+
+
+ 
+
+
 
 
 }

@@ -1,7 +1,9 @@
 const express = require('express')
 const courses_router=require('./routes/courses.routes')
+const mongoose = require('mongoose');
+const url = 'mongodb+srv://youssefkhaled1990:5oJf3LwbTPt0OyQD@cluster0.klei0rh.mongodb.net/codezone?retryWrites=true&w=majority&appName=Cluster0';
 
-
+mongoose.connect(url).then(() => console.log('connect'));
 
 
 // const bodyParser = require('body-parser')
