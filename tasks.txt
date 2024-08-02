@@ -2,4 +2,9 @@
 create api (courses)
     -CRUD course operation 
     -add validation in add course
------------------------------------------   
+-----------------------------------------2/8/2024
+ -Split files to 
+    -controllers
+    -middlewares
+    -routes
+    - add facke data(json files)
