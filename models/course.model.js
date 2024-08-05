@@ -13,7 +13,7 @@ const course_schema = new mongoose.Schema({
 });
 
 
-const courses = mongoose.model('Course', course_schema);
+const Courses = mongoose.model('Course', course_schema);
 module.exports={
-    courses
+    Courses
 }
