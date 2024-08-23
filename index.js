@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const courses_router=require('./routes/courses.routes')
+const user_router=require('./routes/user.routes')
+
 const mongoose = require('mongoose');
 const httpStatusText=require('./utils/httpStatusText')
 require('dotenv').config()
@@ -25,7 +27,7 @@ const app = express()
 app.use(cors())
 app.use(express.json()) //bodyParser.json()
 app.use('/api/courses',courses_router)
-
+app.use('/api/users',user_router)
 app.all('*',(req,res,next)=>{
     return res.status(404).json({ status: httpStatusText.ERROR, data: null, message: "invalid URL ", code: 400 })//err.message
 

@@ -21,4 +21,8 @@ connect with mongodb
    -. CORS defines a way for client web applications that are loaded in one domain to interact with resources in a different domain.
 -solve problem  URL not valid
 -async functions error handier (doing global middleware handler)
-----------------------------------------
+----------------------------------------23/8/2024
+add user (model - controller-routes)
+api (login -register)
+add tocken  
+--------------------------------------
