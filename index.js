@@ -1,5 +1,5 @@
 const express = require('express')
-var cors = require('cors')
+const cors = require('cors')
 const courses_router=require('./routes/courses.routes')
 const mongoose = require('mongoose');
 const httpStatusText=require('./utils/httpStatusText')
@@ -8,6 +8,7 @@ require('dotenv').config()
 const url = process.env.URL_DARABASE;
 
 mongoose.connect(url).then(() => console.log('connect'));
+
 
 
 // const bodyParser = require('body-parser')
