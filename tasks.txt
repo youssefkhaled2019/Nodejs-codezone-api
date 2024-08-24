@@ -25,4 +25,9 @@ connect with mongodb
 add user (model - controller-routes)
 api (login -register)
 add tocken  
---------------------------------------
+--------------------------------------24/8/2024
+create env in  postman and add pramter base_url and jWT 
+    - GET jWT from ligin and save in jWT pramter in postman 
+add premtion or roles  ->  user - manger -     admin  
+uplode   profle image  
+-------------------finish---------------------

@@ -3,18 +3,20 @@ const {body} = require('express-validator') //{ body, validationResult } //body 
 const course_control=require('../controllers/courses.controller')
 const validationschema=require('../middlewares/validation.schema')
 // import { validationschema } from '../middlewares/validation.schema.js'
-
+const verifyToken = require('../middlewares/verfiyToken')
+const userRoles = require('../utils/userRoles');
+const allowedTo = require('../middlewares/allowedTo');
 const courses_router= express.Router()
 
 
 courses_router.route('/')
             .get( course_control.getAllCourses )
-            .post(validationschema(),course_control.addCourse)
+            .post(verifyToken, allowedTo(userRoles.MANGER), validationschema(),course_control.addCourse)
 
 courses_router.route('/:id')
             .get(course_control.getCourses )
             .patch(course_control.updateCourse )
-            .delete( course_control.deleteCourse)
+            .delete(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), course_control.deleteCourse)
 
 
 

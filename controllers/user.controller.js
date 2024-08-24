@@ -7,6 +7,11 @@ const asyncWrapper = require('../middlewares/asyncWrapper')
 const appError = require("../utils/appError")
 const hash = require("bcryptjs")
 const generateJWT=require('../utils/generateJWT')
+
+
+
+
+
 const getAllUsers = asyncWrapper(async (req, res) => {
 
     // res.send("ddddddd")
@@ -23,7 +28,7 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 
 
 const register = asyncWrapper(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body
+    const { firstName, lastName, email, password ,role} = req.body
     const olduser = await User.findOne({ email: email })
     if (olduser) {
         const error = appError.create('email already exists', 400, httpStatusText.FAIL)
@@ -31,12 +36,18 @@ const register = asyncWrapper(async (req, res, next) => {
     }
 
     const hashedpassword= await hash.hash(password, 10)
-
-    const newUser = new User({ firstName, lastName, email,password: hashedpassword })
+    
+  if (req.file){
+    filename=req.file.filename 
+  }else{
+    filename="profile.jpg"
+  }
+    
+    const newUser = new User({ firstName, lastName, email,password: hashedpassword ,role,avatar: filename})
 
     // jwt
     // const token = await jwt.sign({ email:newUser.email ,id:newUser.id }, process.env.JWT_SECRT_KEY,{expiresIn:'1m'});//10m,10s,10d
-    newUser.token=await generateJWT({ email:newUser.email ,id:newUser._id })
+    newUser.token=await generateJWT({ email:newUser.email ,id:newUser._id ,role: newUser.role})
 
 
     await newUser.save()
@@ -82,7 +93,7 @@ const login = asyncWrapper(async (req, res, next) => {
 
 
     if (user && matchpassword ){
-        const token= await generateJWT({ email:user.email ,id:user.id })
+        const token= await generateJWT({ email:user.email ,id:user.id,role: user.role })
         return res.status(201).json({ status: httpStatusText.SUCCESS, data: { token:token  } })//user.token
 
     }else{
