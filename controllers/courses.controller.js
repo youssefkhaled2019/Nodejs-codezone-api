@@ -71,11 +71,11 @@ const updateCourse = asyncWrapper(async (req, res, next) => {
     // const updatecourse = await courses.findByIdAndUpdate(id, { $set: { ...req.body } })
     const updatecourse = await Courses.updateOne({ "_id": id }, { $set: { ...req.body } })
 
-    if (updatecourse["upsertedId"] == null) {
-        // return res.status(404).json({ status: httpStatusText.FAIL, data: { course: null } })
-        const error = appError.create('course not found', 400, httpStatusText.FAIL)
-        return next(error);
-    }
+    // if (updatecourse["upsertedId"] == null) {
+    //     // return res.status(404).json({ status: httpStatusText.FAIL, data: { course: null } })
+    //     const error = appError.create('course not found', 400, httpStatusText.FAIL)
+    //     return next(error);
+    // }
 
     //  courses[id]=course
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { course: updatecourse } })

@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const courses_router=require('./routes/courses.routes')
 const user_router=require('./routes/user.routes')
+const path = require('path');
 
 const mongoose = require('mongoose');
 const httpStatusText=require('./utils/httpStatusText')
@@ -26,6 +27,7 @@ mongoose.connect(url).then(() => console.log('connect'));
 const app = express()
 app.use(cors())
 app.use(express.json()) //bodyParser.json()
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //for static file 
 app.use('/api/courses',courses_router)
 app.use('/api/users',user_router)
 app.all('*',(req,res,next)=>{
